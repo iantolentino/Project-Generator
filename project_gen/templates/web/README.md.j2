@@ -1,0 +1,47 @@
+# {{ project_name }}
+
+🚀 Generated with Project Gen – a full‑stack starter for **{{ category }}**.
+
+## 🧩 Stack
+
+- **Platform:** {{ platform }}
+- **Framework:** {{ framework }}
+- **Database:** {{ database }} (ORM: {{ orm }})
+- **Design:** {{ style }} with colors {{ colors | join(', ') }}
+- **Scope:** {{ scope }}
+
+## 🛠️ Getting Started
+
+```bash
+# Install dependencies
+{% if "Next.js" in framework %}
+npm install
+{% elif "Django" in framework %}
+pip install -r requirements.txt
+{% elif "React" in framework %}
+npm install
+{% else %}
+# Add your own setup commands
+{% endif %}
+
+# Run development server
+{% if "Next.js" in framework %}
+npm run dev
+{% elif "Django" in framework %}
+python manage.py runserver
+{% elif "React" in framework %}
+npm start
+{% else %}
+# Add your own run command
+{% endif %}
+
+```bash
+# Project Structure
+{{ project_name }}/
+├── src/
+├── public/
+├── Dockerfile
+├── docker-compose.yml
+├── .github/workflows/ci.yml
+├── .env.example
+└── README.md
