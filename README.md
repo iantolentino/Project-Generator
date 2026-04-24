@@ -1,291 +1,285 @@
-# Project Generator
+# 🚀 Project Generator v2.0
 
-A CLI and web-based tool that instantly scaffolds full-stack projects with proper folder structures, starter code, and configuration files. Supports Web, Desktop, and Hybrid platforms.
+> **Full-stack project scaffolding in seconds.**
+> Pick your stack → generate → only edit `.env` → start building.
 
-## Features
+Supports **7 production-ready stacks** across Web, Desktop, and Hybrid platforms. Works as an interactive CLI **or** a self-hosted web app with a REST API you can `curl`.
 
-- Interactive CLI with questionary prompts
-- Web UI accessible at http://localhost:8000
-- REST API for curl/direct HTTP requests
-- Generates complete folder structures for Web, Desktop, and Hybrid apps
-- Creates starter code with working components, pages, hooks, services
-- Backend server boilerplate with Express routes, controllers, models, middleware
-- Docker and docker-compose configuration
-- Environment variable management with .env.example
-- Git initialization with .gitignore
-- Jinja2 template support for custom project templates
-- Color palette integration into generated CSS
+---
 
-## Installation
+## ✨ What's Generated
 
-pip install -e .
+Every project comes with:
 
-## Usage
+| What | Details |
+|------|---------|
+| **Full project structure** | All folders, files, and configs |
+| **Auth system** | Login, register, JWT or sessions – wired and working |
+| **Database layer** | Schema / models already defined |
+| **Docker Compose** | One command to run everything with a DB GUI |
+| **API routes** | RESTful endpoints with validation + error handling |
+| **Environment file** | `.env.example` – just copy and fill in secrets |
+| **README per project** | Stack-specific quick-start guide |
 
-### CLI Mode
-project-gen
+---
 
-### Web Server Mode
-project-gen-server
-Then open http://localhost:8000 in your browser
+## 🛠 Supported Stacks
 
-### API Mode (curl)
-curl -X POST http://localhost:8000/generate \
-  -H "Content-Type: application/json" \
-  -d '{"platform":"Web","category":"E-commerce","project_name":"my-shop"}' \
-  -o my-shop.zip
+| Stack ID | Framework | Database | Auth | Use for |
+|----------|-----------|----------|------|---------|
+| `nextjs_postgres_prisma` | **Next.js 14** (App Router) | PostgreSQL | NextAuth | E-commerce, SaaS, Dashboards, Blogs |
+| `react_node_mongo` | **React + Express** | MongoDB | JWT | Social apps, Streaming, Gaming |
+| `django_postgres` | **Django REST** | PostgreSQL | SimpleJWT | Healthcare, LMS, Ticketing |
+| `vue_express_mysql` | **Vue 3 + Express** | MySQL | JWT | Restaurants, Finance, Inventory |
+| `react_static` | **React + Vite** | — | — | Portfolios, Landing pages |
+| `electron_sqlite` | **Electron + React** | SQLite | — | Desktop apps |
+| `tauri_react` | **Tauri + React** | SQLite | — | Lightweight desktop apps |
 
-### Direct Python Run (no install)
+---
+
+## ⚡ Quick Start
+
+### Prerequisites
+
+```bash
+# Python 3.10+
+python --version
+
+# Install dependencies
 pip install -r requirements.txt
-python -m project_gen.cli
-python -m project_gen.server
+```
 
-## Project Structure
+---
+
+## 🖥 Mode 1 – Interactive CLI
+
+```bash
+python main.py
+```
+
+Walk through 6 prompts and get a folder generated in your current directory.
+
+```
+╔══════════════════════════════════════════════════════╗
+║          🚀  Project Generator  v2.0                 ║
+╚══════════════════════════════════════════════════════╝
+
+1️⃣  Select platform:        Web
+2️⃣  Choose category:        E-commerce
+   💡 Suggested: Next.js 14 + PostgreSQL + Prisma
+3️⃣  Primary color:          #6366f1
+4️⃣  Design style:           Modern
+5️⃣  Project scope:          Scalable app
+6️⃣  Project name:           my-shop
+
+✅ Project ready!
+   📁 /home/you/my-shop
+
+🔑 Next steps:
+   1. cd my-shop
+   2. cp .env.example .env
+   3. Fill in secret values  ← only thing you need to edit!
+   4. npm install && npm run db:push && npm run db:seed && npm run dev
+```
+
+---
+
+## 🌐 Mode 2 – Web UI + REST API
+
+Start the server:
+```bash
+python main.py --web
+# or
+python main.py --web --port 8080
+```
+
+Open **http://localhost:5050** in your browser.
+
+```
+🌐  Project Generator Web UI  →  http://localhost:5050
+   API: http://localhost:5050/api/generate
+```
+
+The web UI lets you:
+- Select all options via a clean dark-mode interface
+- Preview the resolved tech stack instantly
+- Click **Generate & Download ZIP** – ready in < 1 second
+
+---
+
+## 📡 Mode 3 – REST API / cURL
+
+Generate a project from any script, CI pipeline, or tool:
+
+### Generate a ZIP
+
+```bash
+curl -X POST http://localhost:5050/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "project_name": "shop-app",
+    "platform":     "Web",
+    "category":     "E-commerce",
+    "colors":       ["#6366f1"],
+    "style":        "Modern",
+    "scope":        "Scalable app"
+  }' \
+  --output shop-app.zip
+```
+
+Then:
+```bash
+unzip shop-app.zip
+cd shop-app
+cp .env.example .env
+# Fill in secrets, then:
+npm install && npm run db:push && npm run dev
+```
+
+### List all stacks
+
+```bash
+curl http://localhost:5050/api/stacks | python -m json.tool
+```
+
+### Preview stack for options (no file generation)
+
+```bash
+curl -X POST http://localhost:5050/api/preview \
+  -H "Content-Type: application/json" \
+  -d '{"platform":"Web","category":"Social media app"}'
+```
+
+### API Reference
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/generate` | Generate project ZIP |
+| `GET` | `/api/stacks` | List all stack metadata |
+| `POST` | `/api/preview` | Preview resolved stack |
+
+**POST `/api/generate` body:**
+```json
+{
+  "project_name": "my-app",        // required
+  "platform":     "Web",           // required: Web | Desktop | Hybrid
+  "category":     "E-commerce",    // required: see list below
+  "colors":       ["#6366f1"],     // optional: primary brand color
+  "style":        "Modern",        // optional
+  "scope":        "Scalable app"   // optional
+}
+```
+
+**Response headers:**
+```
+X-Stack-Id:    nextjs_postgres_prisma
+X-Stack-Label: Next.js 14 + PostgreSQL + Prisma
+Content-Type:  application/zip
+```
+
+---
+
+## 📋 Available Categories
+
+```
+Web:     E-commerce · SaaS product · Business dashboard · Blogging platform
+         AI chatbot interface · Streaming platform · Social media app
+         Video conferencing · Cryptocurrency tracker · Gaming hub
+         Ticketing system · Learning management system · Healthcare management
+         Event management · Travel booking · Restaurant ordering system
+         Finance tracker · Inventory management · Portfolio site · Music player
+
+Desktop: All categories → Electron + React + SQLite
+Hybrid:  All categories → Tauri + React + SQLite
+```
+
+---
+
+## 📁 Project Structure
 
 ```
 Project-Generator/
-├── project_gen/
-│   ├── templates/              # Jinja2 templates for generated projects
-│   │   └── web/                # Web platform templates
-│   │       ├── docker-compose.yml.j2
-│   │       ├── Dockerfile.j2
-│   │       └── README.md.j2
-│   ├── web_templates/          # Templates for the web UI
-│   │   └── form.html
-│   ├── __init__.py
-│   ├── cli.py                  # CLI entry point
-│   ├── generator.py            # Core generation logic
-│   ├── prompts.py              # Interactive prompts
-│   ├── utils.py                # File writing and git utilities
-│   ├── server.py               # FastAPI web server
-│   └── structure_maker.py      # Folder structure definitions and parser
-├── README.md
+├── main.py                   # Unified entry point (CLI or web)
 ├── requirements.txt
-└── setup.py
+├── setup.py
+├── structure.py              # Tkinter folder tree viewer (standalone)
+└── project_gen/
+    ├── __init__.py
+    ├── cli.py                # Interactive terminal prompts
+    ├── server.py             # Flask web server + REST API + UI
+    ├── generator.py          # Disk writer (CLI) + ZIP builder (API)
+    ├── stacks.py             # All 7 stack templates (full code)
+    ├── prompts.py            # questionary CLI prompts
+    └── utils.py              # Helpers
 ```
 
-## Supported Platforms and Stacks
+---
 
-### Web
-- E-commerce: Next.js + PostgreSQL + Prisma
-- Streaming platform: React + Node.js + MongoDB + Mongoose
-- Social media app: Django + PostgreSQL + Django ORM
-- Default: React + Express + SQLite
+## 🐳 Run Web Server with Docker
 
-### Desktop
-- Default: Electron + SQLite + Sequelize
-
-### Hybrid
-- Default: Tauri + SQLite + Diesel
-
-## Generated Project Structure (Web)
-
-```
-project-name/
-├── index.html                  # Entry HTML with root div
-├── vite.config.js              # Vite configuration with API proxy
-├── package.json                # Dependencies (React, Vite, React Router)
-├── docker-compose.yml          # Docker compose for app
-├── Dockerfile                  # Docker build instructions
-├── .env.example                # Environment variable template
-├── .gitignore                  # Git ignore rules
-├── README.md                   # Project documentation
-├── src/
-│   ├── main.jsx                # React entry point
-│   ├── App.jsx                 # Main app component with counter demo
-│   ├── index.css               # Global styles with CSS reset
-│   ├── components/
-│   │   ├── Header/
-│   │   │   ├── Header.jsx      # Header component
-│   │   │   └── Header.css      # Header styles with user's primary color
-│   │   ├── Footer/
-│   │   │   ├── Footer.jsx      # Footer component
-│   │   │   └── Footer.css      # Footer styles
-│   │   └── Layout/
-│   │       ├── Layout.jsx      # Layout wrapper with Header and Footer
-│   │       └── Layout.css      # Layout flexbox styles
-│   ├── pages/
-│   │   ├── Home/
-│   │   │   ├── Home.jsx        # Home page with API data fetching
-│   │   │   └── Home.css        # Home page styles
-│   │   └── About/
-│   │       ├── About.jsx       # About page with tech stack info
-│   │       └── About.css       # About page styles
-│   ├── hooks/
-│   │   ├── useAuth.js          # Authentication hook (login/logout)
-│   │   └── useFetch.js         # Data fetching hook
-│   ├── services/
-│   │   ├── api.js              # API service functions
-│   │   └── auth.js             # Auth service (login/register)
-│   ├── utils/
-│   │   ├── helpers.js          # Utility functions
-│   │   └── constants.js        # App constants
-│   └── styles/
-│       ├── global.css          # Global app styles
-│       └── variables.css       # CSS custom properties with user colors
-├── server/
-│   ├── index.js                # Express server with CORS and JSON parsing
-│   ├── package.json            # Server dependencies (Express, CORS)
-│   ├── routes/
-│   │   ├── api.js              # API routes
-│   │   └── auth.js             # Auth routes (login/register)
-│   ├── controllers/
-│   │   ├── userController.js   # User CRUD operations
-│   │   └── dataController.js   # Data CRUD operations
-│   ├── models/
-│   │   ├── User.js             # User model class
-│   │   └── Data.js             # Data model class
-│   ├── middleware/
-│   │   ├── auth.js             # Authentication middleware
-│   │   └── validation.js       # Input validation middleware
-│   └── config/
-│       ├── database.js         # Database configuration
-│       └── environment.js      # Environment configuration
-└── tests/
-    ├── unit/
-    │   └── example.test.js     # Unit test example
-    ├── integration/
-    │   └── api.test.js         # API integration test example
-    └── setup.js                # Test setup with fetch mock
+```dockerfile
+# Dockerfile.server (create this if you want to containerise the generator itself)
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 5050
+CMD ["python", "main.py", "--web", "--port", "5050"]
 ```
 
-## Core Files Explained
+```bash
+docker build -t project-gen .
+docker run -p 5050:5050 project-gen
+```
 
-### cli.py
-Entry point for CLI. Calls prompts.py to gather options, then generator.py to create project.
+---
 
-### prompts.py
-Interactive questionary prompts for platform, category, colors, style, and scope selection.
+## 🔧 Install as CLI tool
 
-### generator.py
-Main generation logic:
-- suggest_stack() maps platform+category to framework+database+ORM
-- create_structure_from_template() creates folder structure from tree definitions
-- write_starter_files() generates all source code files with proper content
-- generate_project() orchestrates the entire process
-- Handles template rendering with Jinja2
-- Creates config files (Dockerfile, docker-compose.yml, .env.example, .gitignore, README.md, package.json)
+```bash
+pip install -e .
 
-### server.py
-FastAPI web server with:
-- GET / : HTML form for web UI
-- POST /generate : JSON API that returns ZIP file
-- POST /generate-form : Form submission that returns ZIP file
+# Then use anywhere:
+project-gen          # interactive CLI
+project-gen-web      # web server
+```
 
-### structure_maker.py
-- Defines folder tree structures for Web, Desktop, and Hybrid platforms
-- parse_tree_structure() parses ASCII tree diagrams into operations list
-- calculate_tree_depth() determines nesting level from tree characters
-- extract_clean_name() extracts file/folder names from tree lines
+---
 
-### utils.py
-- write_file() handles file writing with retry logic for Windows file locks
-- init_git_repo() initializes git and creates .gitignore
+## 📖 After Generation – What to Edit
 
-## How to Add New Templates
+For every generated project, **the only files you need to edit** before running are:
 
-1. Add a new entry in CATEGORY_STACK dictionary in generator.py
-2. Create template files in project_gen/templates/{platform}/
-3. Use .j2 extension for Jinja2 template files
-4. Template variables available: project_name, platform, category, colors, style, scope, framework, database, orm
+### 1. `.env` (copy from `.env.example`)
 
-Example template (docker-compose.yml.j2):
-version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - APP_NAME={{ project_name }}
+Each project's `.env.example` is fully commented. The secrets you **must** change:
 
-## How to Add New Platform Structures
+| Stack | Required secrets |
+|-------|-----------------|
+| Next.js | `DATABASE_URL`, `NEXTAUTH_SECRET` |
+| React + Node | `MONGODB_URI`, `JWT_SECRET` |
+| Django | `SECRET_KEY`, `DATABASE_URL` |
+| Vue + Express | `DB_PASS`, `JWT_SECRET` |
+| React Static | `VITE_API_KEY` (if using external APIs) |
+| Electron | None – SQLite is local |
 
-1. Add a new structure tree in structure_maker.py
-2. Use ASCII tree format with / for folders
-3. Add to STRUCTURE_TEMPLATES dictionary
-4. Add starter code generation in write_starter_files() function in generator.py
+### 2. Nothing else is required to run
 
-## How to Add New Prompts
+Everything else – routes, models, auth, Docker config – is pre-wired and ready.
 
-1. Add new options in prompts.py (lists PLATFORMS, CATEGORIES, STYLES, SCOPES)
-2. Add new questionary prompts in gather_project_options()
-3. Update the context dictionary in generator.py
-4. Use the new variables in templates with {{ variable_name }}
+---
 
-## Dependencies
+## 🗺 Roadmap
 
-- questionary: Interactive CLI prompts
-- Jinja2: Template rendering
-- colorama: Terminal colors
-- pyyaml: YAML support
-- fastapi: Web server framework
-- uvicorn: ASGI server
-- python-multipart: Form data parsing
-- pydantic: Data validation
+- [ ] More stacks: Laravel, NestJS, FastAPI, Ruby on Rails
+- [ ] Template customisation via YAML config file
+- [ ] GitHub Actions CI/CD files per stack
+- [ ] `--no-git` and `--no-docker` CLI flags
+- [ ] Plugin system for custom stacks
 
-## API Reference
+---
 
-### POST /generate
+## 📄 License
 
-Request body:
-{
-  "platform": "Web",
-  "category": "E-commerce",
-  "colors": ["#3B82F6", "#10B981", "#F59E0B", "#EF4444", "#8B5CF6"],
-  "style": "Modern",
-  "scope": "Scalable app",
-  "project_name": "my-project"
-}
-
-Response: ZIP file download
-
-### POST /generate-form
-
-Form fields: platform, category, colors, style, scope, project_name
-Response: ZIP file download
-
-## Troubleshooting
-
-### Permission denied on Windows
-- Close any programs that might have the generated folder open
-- Delete the project folder manually before regenerating
-- Run terminal as Administrator
-
-### project-gen command not found
-- Add Python Scripts folder to PATH: C:\Users\USER\AppData\Roaming\Python\Python314\Scripts
-- Or run directly: python -m project_gen.cli
-
-### Templates not rendering
-- Ensure template files have .j2 extension
-- Check that folder structure exists: project_gen/templates/{platform}/
-- Verify Jinja2 syntax in templates
-
-### Localhost not working after generation
-- Run npm install in project root
-- Run cd server && npm install
-- Start server: cd server && npm start
-- Start frontend: npm run dev
-- Open http://localhost:3000
-
-## Security Notes
-
-- Generated .env.example files contain placeholder values
-- SECRET_KEY is set to "change_this_to_random_string"
-- Database passwords default to "change_me"
-- Users must change all values before deploying
-- .env is added to .gitignore to prevent committing secrets
-
-## Future Improvements
-
-- Add more platform templates (Mobile, CLI tools, Libraries)
-- Add database migration files
-- Add authentication boilerplate (JWT, OAuth)
-- Add testing frameworks setup (Jest, Vitest)
-- Add CI/CD pipeline templates
-- Add TypeScript option for all platforms
-- Add more ORM options
-- Add API documentation generation
-- Add storybook setup for components
-- Add i18n internationalization setup
+MIT – use freely in personal and commercial projects.
