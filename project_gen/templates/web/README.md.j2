@@ -1,47 +1,18 @@
 # {{ project_name }}
 
-🚀 Generated with Project Gen – a full‑stack starter for **{{ category }}**.
+Generated with Project Generator.
 
-## 🧩 Stack
+## Stack
+- Framework: {{ framework }}
+- Database: {{ database }}
+- ORM: {{ orm }}
 
-- **Platform:** {{ platform }}
-- **Framework:** {{ framework }}
-- **Database:** {{ database }} (ORM: {{ orm }})
-- **Design:** {{ style }} with colors {{ colors | join(', ') }}
-- **Scope:** {{ scope }}
+## Setup
 
-## 🛠️ Getting Started
+1. Copy `.env.example` to `.env` and fill in your secret values
+2. Run `docker-compose up`
+3. Your app is ready!
 
-```bash
-# Install dependencies
-{% if "Next.js" in framework %}
-npm install
-{% elif "Django" in framework %}
-pip install -r requirements.txt
-{% elif "React" in framework %}
-npm install
-{% else %}
-# Add your own setup commands
-{% endif %}
-
-# Run development server
-{% if "Next.js" in framework %}
-npm run dev
-{% elif "Django" in framework %}
-python manage.py runserver
-{% elif "React" in framework %}
-npm start
-{% else %}
-# Add your own run command
-{% endif %}
-
-```bash
-# Project Structure
-{{ project_name }}/
-├── src/
-├── public/
-├── Dockerfile
-├── docker-compose.yml
-├── .github/workflows/ci.yml
-├── .env.example
-└── README.md
+## Environment Variables
+All configuration is done through environment variables.
+Edit the `.env` file to change database credentials, API keys, etc.

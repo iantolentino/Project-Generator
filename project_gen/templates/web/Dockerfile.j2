@@ -1,0 +1,6 @@
+FROM {{ base_image }}
+WORKDIR /app
+COPY . .
+RUN {{ install_command }}
+EXPOSE {{ port }}
+CMD ["{{ start_command }}"]

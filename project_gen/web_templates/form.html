@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Generator</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 500px; margin: 2rem auto; background: #f9fafb; }
+        form { background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        label { display: block; margin-top: 1rem; font-weight: 600; }
+        select, input { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.25rem; }
+        button { margin-top: 1.5rem; padding: 0.75rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.25rem; cursor: pointer; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>Project Generator</h1>
+    <form action="/generate-form" method="post">
+        <label for="project_name">Project Name</label>
+        <input type="text" id="project_name" name="project_name" value="my-project" required>
+
+        <label for="platform">Platform</label>
+        <select id="platform" name="platform">
+            <option value="Web">Web</option>
+            <option value="Desktop">Desktop</option>
+            <option value="Hybrid">Hybrid</option>
+        </select>
+
+        <label for="category">Category</label>
+        <select id="category" name="category">
+            <option>E-commerce</option>
+            <option>Streaming platform</option>
+            <option>Ticketing system</option>
+            <option>Business dashboard</option>
+            <option>Blogging platform</option>
+            <option>Portfolio site</option>
+            <option>Social media app</option>
+            <option>Learning management system</option>
+            <option>SaaS product</option>
+            <option>Cryptocurrency tracker</option>
+            <option>AI chatbot interface</option>
+            <option>Healthcare management</option>
+            <option>Restaurant ordering system</option>
+            <option>Event management</option>
+            <option>Travel booking</option>
+            <option>Music player</option>
+            <option>Video conferencing</option>
+            <option>Inventory management</option>
+            <option>Finance tracker</option>
+            <option>Gaming hub</option>
+        </select>
+
+        <label for="colors">Colors (comma separated, max 5)</label>
+        <input type="text" id="colors" name="colors" value="#3B82F6,#10B981,#F59E0B,#EF4444,#8B5CF6">
+
+        <label for="style">Design Style</label>
+        <select id="style" name="style">
+            <option>Modern</option>
+            <option>Minimal</option>
+            <option>Dark Theme</option>
+            <option>Corporate</option>
+            <option>Playful</option>
+            <option>Elegant</option>
+        </select>
+
+        <label for="scope">Project Scope</label>
+        <select id="scope" name="scope">
+            <option>Scalable app</option>
+            <option>Landing page</option>
+            <option>Static-only</option>
+        </select>
+
+        <button type="submit">Generate & Download</button>
+    </form>
+    <p style="margin-top:1rem; font-size:0.9rem; color:#6b7280; text-align: center;">
+        Also via <code>curl</code>:<br>
+        <code>curl -X POST http://localhost:8000/generate -H "Content-Type: application/json" -d '{"platform":"Web","category":"E-commerce","project_name":"shop"}' -o shop.zip</code>
+    </p>
+</body>
+</html>
